@@ -57,7 +57,7 @@ index e40cb1b..ff2f920 100644
    target_link_libraries(Testing PUBLIC
      Foundation)
 diff --git a/swift-foundation/Sources/FoundationEssentials/Platform.swift b/swift-foundation/Sources/FoundationEssentials/Platform.swift
-index da4977b..4ffc567 100644
+index da4977b..6587ccd 100644
 --- a/swift-foundation/Sources/FoundationEssentials/Platform.swift
 +++ b/swift-foundation/Sources/FoundationEssentials/Platform.swift
 @@ -164,9 +164,13 @@ extension Platform {
@@ -74,4 +74,22 @@ index da4977b..4ffc567 100644
      }
      
      static func name(forUID uid: uid_t) -> String? {
+@@ -193,12 +197,16 @@ extension Platform {
+     }
+     
+     static func name(forGID gid: gid_t) -> String? {
++        #if os(Android)
++            return nil
++        #else
+         withUserGroupBuffer(gid, group(), sizeProperty: Int32(_SC_GETGR_R_SIZE_MAX), operation: getgrgid_r) {
+             // Android's gr_name `char *`` is nullable when it should be non-null.
+             // FIXME: avoid the coerce cast workaround once https://github.com/android/ndk/issues/2098 is fixed.
+             let gr_name: UnsafeMutablePointer<CChar>? = $0.gr_name
+             return gr_name.flatMap { String(cString: $0) }
+         }
++        #endif
+     }
+     
+     static func homeDirectory(forUserName userName: String) -> String? {
+
 
