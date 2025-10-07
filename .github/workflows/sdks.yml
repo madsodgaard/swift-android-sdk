@@ -136,6 +136,7 @@ jobs:
               git apply swift-android-testing-release.patch
             fi
           fi
+          git apply ifaddrs.patch
 
           perl -pi -e 's%33%24%' $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/execinfo.h
           perl -pi -e 's%String\(cString: getpass%\"fake\" //%' swiftpm/Sources/PackageRegistryCommand/PackageRegistryCommand+Auth.swift
@@ -176,9 +177,8 @@ jobs:
             mv curl execinfo.h libxml2 spawn.h include/
             cp -r ../../swift/lib/ClangImporter/SwiftBridging/{module.modulemap,swift} include/
 
-            # Shims for ifaddrs.h
-            mv include/ifaddrs.h include/ifaddrs_libc.h
-            mv ${GITHUB_WORKSPACE}/shims/ include/
+            # Patch ifaddrs.h for API 23 shims
+            perl -pi -e 's%24%23%' include/ifaddrs.h
 
             TRIPLE="$arch-linux-android"
             if [[ $arch == 'armv7' ]]; then
