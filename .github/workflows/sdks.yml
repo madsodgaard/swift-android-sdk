@@ -176,6 +176,10 @@ jobs:
             mv curl execinfo.h libxml2 spawn.h include/
             cp -r ../../swift/lib/ClangImporter/SwiftBridging/{module.modulemap,swift} include/
 
+            # Shims for ifaddrs.h
+            mv include/ifaddrs.h include/ifaddrs_libc.h
+            mv ${GITHUB_WORKSPACE}/shims/ include/
+
             TRIPLE="$arch-linux-android"
             if [[ $arch == 'armv7' ]]; then
                 TRIPLE="arm-linux-androideabi"
