@@ -1,7 +1,7 @@
-diff --git a/stdlib/public/stubs/CMakeLists.txt b/stdlib/public/stubs/CMakeLists.txt
+diff --git a/swift/stdlib/public/stubs/CMakeLists.txt b/swift/stdlib/public/stubs/CMakeLists.txt
 index 6f6efeeae21..9d8abbbf119 100644
---- a/stdlib/public/stubs/CMakeLists.txt
-+++ b/stdlib/public/stubs/CMakeLists.txt
+--- a/swift/stdlib/public/stubs/CMakeLists.txt
++++ b/swift/stdlib/public/stubs/CMakeLists.txt
 @@ -11,6 +11,7 @@ set(swift_stubs_sources
      Unicode/UnicodeNormalization.cpp
      Unicode/UnicodeScalarProps.cpp
@@ -10,11 +10,11 @@ index 6f6efeeae21..9d8abbbf119 100644
  )
  set(swift_stubs_objc_sources
      Availability.mm
-diff --git a/stdlib/public/stubs/IfaddrsStub.cpp b/stdlib/public/stubs/IfaddrsStub.cpp
+diff --git a/swift/stdlib/public/stubs/IfaddrsStub.cpp b/swift/stdlib/public/stubs/IfaddrsStub.cpp
 new file mode 100644
 index 00000000000..aa7c5191e5c
 --- /dev/null
-+++ b/stdlib/public/stubs/IfaddrsStub.cpp
++++ b/swift/stdlib/public/stubs/IfaddrsStub.cpp
 @@ -0,0 +1,268 @@
 +/*
 + * Copyright (C) 2009 The Android Open Source Project
