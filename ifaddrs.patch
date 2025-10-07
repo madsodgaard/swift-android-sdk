@@ -12,10 +12,10 @@ index 6f6efeeae21..9d8abbbf119 100644
      Availability.mm
 diff --git a/swift/stdlib/public/stubs/IfaddrsStub.cpp b/swift/stdlib/public/stubs/IfaddrsStub.cpp
 new file mode 100644
-index 00000000000..aa7c5191e5c
+index 00000000000..5188217983c
 --- /dev/null
 +++ b/swift/stdlib/public/stubs/IfaddrsStub.cpp
-@@ -0,0 +1,268 @@
+@@ -0,0 +1,275 @@
 +/*
 + * Copyright (C) 2009 The Android Open Source Project
 + *
@@ -215,11 +215,18 @@ index 00000000000..aa7c5191e5c
 +    ifaddrmsg msg;
 +};
 +inline bool sendNetlinkMessage(int fd, const void* data, size_t byteCount) {
-+    ssize_t sentByteCount = TEMP_FAILURE_RETRY(send(fd, data, byteCount, 0));
++    ssize_t sentByteCount;
++    do {
++        sentByteCount = send(fd, data, byteCount, 0);
++    } while (sentByteCount == -1 && errno == EINTR);
 +    return (sentByteCount == static_cast<ssize_t>(byteCount));
 +}
 +inline ssize_t recvNetlinkMessage(int fd, char* buf, size_t byteCount) {
-+    return TEMP_FAILURE_RETRY(recv(fd, buf, byteCount, 0));
++    ssize_t result;
++    do {
++      result = recv(fd, buf, byteCount, 0);
++    } while (result == -1 && errno == EINTR);
++    return result;
 +}
 +// Source-compatible with the BSD function.
 +inline int getifaddrs(ifaddrs** result) {
@@ -242,7 +249,7 @@ index 00000000000..aa7c5191e5c
 +        return -1;
 +    }
 +    // Read the responses.
-+    LocalArray<0> buf(65536); // We don't necessarily have std::vector.
++    LocalArray<1> buf(65536); // We don't necessarily have std::vector.
 +    ssize_t bytesRead;
 +    while ((bytesRead  = recvNetlinkMessage(fd.get(), &buf[0], buf.size())) > 0) {
 +        nlmsghdr* hdr = reinterpret_cast<nlmsghdr*>(&buf[0]);
