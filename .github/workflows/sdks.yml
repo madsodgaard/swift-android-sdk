@@ -141,6 +141,7 @@ jobs:
           perl -pi -e 's%33%24%' $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/execinfo.h
           perl -pi -e 's%String\(cString: getpass%\"fake\" //%' swiftpm/Sources/PackageRegistryCommand/PackageRegistryCommand+Auth.swift
           perl -pi -e "s%swift/android',%swift/android', '-Xlinker', '-landroid-spawn',%" sourcekit-lsp/Utilities/build-script-helper.py
+          perl -pi -e 's%24%23%' $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ifaddrs.h
           VERSION="$(echo ${{ steps.version.outputs.tag }} | cut -f1,2 -d-)-${{ matrix.version }}"
 
           # e.g. swift-6.2-release-android-24-sdk
@@ -176,9 +177,6 @@ jobs:
             rm -r include/*
             mv curl execinfo.h libxml2 spawn.h include/
             cp -r ../../swift/lib/ClangImporter/SwiftBridging/{module.modulemap,swift} include/
-
-            # Patch ifaddrs.h for API 23 shims
-            perl -pi -e 's%24%23%' include/ifaddrs.h
 
             TRIPLE="$arch-linux-android"
             if [[ $arch == 'armv7' ]]; then
