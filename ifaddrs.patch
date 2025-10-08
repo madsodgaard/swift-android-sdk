@@ -12,10 +12,10 @@ index 6f6efeeae21..9d8abbbf119 100644
      Availability.mm
 diff --git a/swift/stdlib/public/stubs/IfaddrsStub.cpp b/swift/stdlib/public/stubs/IfaddrsStub.cpp
 new file mode 100644
-index 00000000000..0d036e92986
+index 00000000000..a91f4f94116
 --- /dev/null
 +++ b/swift/stdlib/public/stubs/IfaddrsStub.cpp
-@@ -0,0 +1,408 @@
+@@ -0,0 +1,409 @@
 +/*
 + * Copyright (C) 2015 The Android Open Source Project
 + * All rights reserved.
@@ -47,7 +47,6 @@ index 00000000000..0d036e92986
 +#if defined(__ANDROID_API__) && __ANDROID_API__ < 24
 +#include <ifaddrs.h>
 +// #include <async_safe/log.h>
-+#include <cutils/misc.h>           // FIRST_APPLICATION_UID
 +#include <errno.h>
 +#include <linux/if_packet.h>
 +#include <net/if.h>
@@ -63,6 +62,8 @@ index 00000000000..0d036e92986
 +#include "private/ErrnoRestorer.h"
 +#include <sys/ioctl.h>
 +#include <sys/socket.h>
++
++#define FIRST_APPLICATION_UID 10000 // from cutils/misc.h
 +
 +class ScopedFd {
 +public:
@@ -424,4 +425,3 @@ index 00000000000..0d036e92986
 +
 +} // extern "C"
 +#endif
-\ No newline at end of file
