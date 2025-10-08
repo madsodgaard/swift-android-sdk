@@ -12,10 +12,10 @@ index 6f6efeeae21..9d8abbbf119 100644
      Availability.mm
 diff --git a/swift/stdlib/public/stubs/IfaddrsStub.cpp b/swift/stdlib/public/stubs/IfaddrsStub.cpp
 new file mode 100644
-index 00000000000..3d8645e689c
+index 00000000000..2fd15faef73
 --- /dev/null
 +++ b/swift/stdlib/public/stubs/IfaddrsStub.cpp
-@@ -0,0 +1,408 @@
+@@ -0,0 +1,413 @@
 +/*
 + * Copyright (C) 2015 The Android Open Source Project
 + * All rights reserved.
@@ -45,6 +45,8 @@ index 00000000000..3d8645e689c
 + */
 +
 +#if defined(__ANDROID_API__) && __ANDROID_API__ < 24
++#include "swift/shims/Visibility.h"
++
 +#include <ifaddrs.h>
 +// #include <async_safe/log.h>
 +#include <errno.h>
@@ -386,6 +388,7 @@ index 00000000000..3d8645e689c
 +
 +extern "C" {
 +
++SWIFT_RUNTIME_STDLIB_API
 +int getifaddrs(ifaddrs** out) {
 +  // We construct the result directly into `out`, so terminate the list.
 +  *out = nullptr;
@@ -414,6 +417,8 @@ index 00000000000..3d8645e689c
 +  }
 +  return 0;
 +}
++
++SWIFT_RUNTIME_STDLIB_API
 +void freeifaddrs(ifaddrs* list) {
 +  while (list != nullptr) {
 +    ifaddrs* current = list;
