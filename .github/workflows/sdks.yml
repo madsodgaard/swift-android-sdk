@@ -170,7 +170,7 @@ jobs:
 
             # Patch stdio FILE structure to always import as OpaquePointer
             cp $SYSROOT/usr/include/stdio.h ${SDK_NAME}/usr/include
-            perl -i -0777 -pe 's/#if ANDROID_API < 24\R#include <bits/struct_file.h>\R#endif\R//' $${SDK_NAME}/usr/include/stdio.h
+            perl -pi -e 's%#if __ANDROID_API__ < 24\R#include <bits/struct_file.h>\R#endif\R?%%' ${SDK_NAME}/usr/include/stdio.h
 
             ./swift/utils/build-script -RA --skip-build-cmark --build-llvm=0 --android --android-ndk $ANDROID_NDK_HOME --android-arch $arch --android-api-level $ANDROID_API_LEVEL --native-swift-tools-path=${TOOLCHAIN}/bin --native-clang-tools-path=${TOOLCHAIN}/bin --cross-compile-hosts=android-$arch --cross-compile-deps-path=$SDK --skip-local-build --build-swift-static-stdlib --xctest --install-swift --install-libdispatch --install-foundation --install-xctest --swift-testing --install-swift-testing --swift-testing-macros --install-swift-testing-macros --install-destdir=$SDK --swift-install-components='compiler;clang-resource-dir-symlink;license;stdlib;sdk-overlay' --cross-compile-append-host-target-to-destdir=False --cross-compile-build-swift-tools=False --skip-test-linux --skip-test-xctest --skip-test-foundation $BUILD_FLAG
 
