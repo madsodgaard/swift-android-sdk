@@ -164,9 +164,9 @@ jobs:
             cp $SYSROOT/usr/include/execinfo.h ${SDK_NAME}/usr/include
             perl -pi -e 's%33%24%' ${SDK_NAME}/usr/include/execinfo.h
 
-            # Patch the ifaddrs now that we have a a stub
-            cp $SYSROOT/usr/include/ifaddrs.h ${SDK_NAME}/usr/include
-            perl -pi -e 's%24%23%' ${SDK_NAME}/usr/include/ifaddrs.h
+            # # Patch the ifaddrs now that we have a a stub
+            # cp $SYSROOT/usr/include/ifaddrs.h ${SDK_NAME}/usr/include
+            # perl -pi -e 's%24%23%' ${SDK_NAME}/usr/include/ifaddrs.h
 
             # Patch stdio FILE structure to always import as OpaquePointer
             cp $SYSROOT/usr/include/stdio.h ${SDK_NAME}/usr/include
@@ -181,9 +181,9 @@ jobs:
             patchelf --set-rpath \$ORIGIN lib/swift/android/lib[dFXs]*.so
             # Remove executables and unused toolchain headers/libraries
             rm -r bin lib/libsqlite3.so lib/lib{curses,ncurses}.so lib/terminfo share/{tabset,terminfo}
-            mv include/curl include/execinfo.h include/libxml2 include/spawn.h include/ifaddrs.h include/stdio.h .
+            mv include/curl include/execinfo.h include/libxml2 include/spawn.h include/stdio.h .
             rm -r include/*
-            mv curl execinfo.h libxml2 spawn.h ifaddrs.h stdio.h include/
+            mv curl execinfo.h libxml2 spawn.h stdio.h include/
             cp -r ../../swift/lib/ClangImporter/SwiftBridging/{module.modulemap,swift} include/
 
             TRIPLE="$arch-linux-android"
