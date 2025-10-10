@@ -46,6 +46,39 @@ packagingOptions {
 }
 ```
 
+## Limitations
+
+
 ## Changes
 Below is a list of the changes we had to make to make it work on API 23.
 
+### Make `FILE` import as OpaquePointer
+On Android 23 the `FILE` struct was actually visible, meaning that it would get
+"correctly" imported as `UnsafeMutablePointer<FILE>`. However, on API 24+
+it is imported as `OpaquePointer`. Since a lot of Swift libraries do
+```swift
+if #canImport(Android)
+typealias CFilePointer = OpaquePointer
+#else
+typealias CFilePointer = UnsafeMutablePointer<FILE>
+#endif
+```
+it would fail to build on API 23. We therefore path the `stdio.h` NDK header
+to make sure it is imported as `OpaquePointer` on API 23 as well.
+
+### `ifaddrs.h` stub
+`getifaddrs` and `freeifaddrs` was added in API 24.
+We therefore add a shim for this on Android 23. The implementation
+is basically the [Android implementation](https://android.googlesource.com/platform/bionic/+/refs/tags/ndk-r29/libc/bionic/ifaddrs.cpp),
+but modified to make it compile with the Swift standard library.
+
+We also modify the `ifaddrs.h` header to move the constraint to API 23 instead of 24.
+
+### Bionic group file APIs
+Android 23 does not include support for `getgrgid_r` and `getgrnam_r`,
+which are used in `FoundationEssentials/Platform.swift`.
+We have just stubbed these out, as we don't need them.
+
+### Disable backtrace in swift-testing
+`swift-testing` uses `backtrace`, which does not work on Android 23.
+We therefore just disable backtrace support.
