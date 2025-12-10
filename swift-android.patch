@@ -91,18 +91,5 @@ index da4977b..6587ccd 100644
      }
      
      static func homeDirectory(forUserName userName: String) -> String? {
-diff --git a/swift-testing/Sources/Testing/SourceAttribution/Backtrace.swift b/swift-testing/Sources/Testing/SourceAttribution/Backtrace.swift
-index 9781575..2d87215 100644
---- a/swift-testing/Sources/Testing/SourceAttribution/Backtrace.swift
-+++ b/swift-testing/Sources/Testing/SourceAttribution/Backtrace.swift
-@@ -65,7 +65,7 @@ public struct Backtrace: Sendable {
-       } else {
-         initializedCount = .init(clamping: backtrace(addresses.baseAddress!, .init(clamping: addresses.count)))
-       }
--#elseif os(Android)
-+#elseif os(AndroidDISABLED)
-       initializedCount = addresses.withMemoryRebound(to: UnsafeMutableRawPointer.self) { addresses in
-         .init(clamping: backtrace(addresses.baseAddress!, .init(clamping: addresses.count)))
-       }
 
 
