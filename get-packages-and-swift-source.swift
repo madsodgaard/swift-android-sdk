@@ -14,12 +14,13 @@ var swiftRepos = ["llvm-project", "swift", "swift-experimental-string-processing
 let extraSwiftRepos = ["swift-llbuild", "swift-package-manager", "swift-driver",
                        "swift-tools-support-core", "swift-argument-parser", "swift-crypto",
                        "indexstore-db", "sourcekit-lsp", "swift-system", "swift-lmdb",
-                       "swift-certificates", "swift-asn1", "swift-toolchain-sqlite", "swift-build"]
+                       "swift-certificates", "swift-asn1", "swift-toolchain-sqlite",
+                       "swift-build", "swift-tools-protocols"]
 let appleRepos = ["swift-argument-parser", "swift-crypto", "swift-system", "swift-collections", "swift-certificates", "swift-asn1"]
 let renameRepos = ["swift-llbuild" : "llbuild", "swift-package-manager" : "swiftpm"]
-var repoTags = ["swift-system" : "1.5.0", "swift-collections" : "1.1.3", "swift-asn1" : "1.0.0",
-                "swift-certificates" : "1.0.1", "swift-argument-parser" : "1.4.0",
-                "swift-crypto" : "3.0.0", "swift-toolchain-sqlite" : "1.0.1"]
+var repoTags = ["swift-system" : "1.5.0", "swift-collections" : "1.1.6", "swift-asn1" : "1.3.2",
+                "swift-certificates" : "1.10.1", "swift-argument-parser" : "1.5.1",
+                "swift-crypto" : "3.12.5", "swift-toolchain-sqlite" : "1.0.1", "swift-tools-protocols" : "0.0.9"]
 if ProcessInfo.processInfo.environment["BUILD_SWIFT_PM"] != nil {
   swiftRepos += extraSwiftRepos
   termuxPackages += ["ncurses", "libsqlite"]
@@ -55,15 +56,13 @@ if tagExtract.numberOfMatches(in: SWIFT_TAG, range: tagRange) == 1 {
 
 if swiftBranch == "RELEASE" {
   sdkDir = "swift-release-android-\(ANDROID_ARCH)-24-sdk"
+  repoTags["swift-collections"] = "1.1.3"
+  repoTags["swift-argument-parser"] = "1.4.0"
+  repoTags["swift-crypto"] = "3.0.0"
+  repoTags["swift-certificates"] = "1.0.1"
+  repoTags["swift-asn1"] = "1.0.0"
 } else {
   sdkDir = "swift-\(swiftVersion == "" ? "trunk" : "devel")-android-\(ANDROID_ARCH)-\(swiftSnapshotDate)-24-sdk"
-  if swiftVersion == "" {
-    repoTags["swift-collections"] = "1.1.6"
-    repoTags["swift-argument-parser"] = "1.5.1"
-    repoTags["swift-crypto"] = "3.12.5"
-    repoTags["swift-certificates"] = "1.10.1"
-    repoTags["swift-asn1"] = "1.3.2"
-  }
 }
 
 // takes the name of a command-line executable and the arguments to pass to it

@@ -120,6 +120,8 @@ jobs:
           elif ${{ startsWith(matrix.os, 'ubuntu') }}; then
             sudo apt install ninja-build
           fi
+          sudo rm -fr /opt/ghc /opt/hostedtoolcache /usr/share/dotnet
+          # /usr/share/swift
 
           cd sdk-config
 
@@ -127,14 +129,11 @@ jobs:
 
           git apply -C1 swift-android.patch swift-android-ci.patch
           BUILD_FLAG="--foundation-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
-          if ${{ matrix.version == 'trunk' }}; then
-            git apply swift-android-trunk-libdispatch.patch
-            BUILD_FLAG+=" --libdispatch-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
+          if ${{ matrix.version == 'release' }}; then
+            git apply swift-android-ci-release.patch swift-android-release.patch
           else
-            git apply swift-android-ci-except-trunk.patch swift-android-except-trunk.patch
-            if ${{ matrix.version == 'release' }}; then
-              git apply swift-android-testing-release.patch
-            fi
+            git apply swift-android-spawn.patch
+            BUILD_FLAG+=" --libdispatch-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
           fi
           git apply ifaddrs.patch
 
