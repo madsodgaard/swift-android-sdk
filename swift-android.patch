@@ -57,13 +57,13 @@ index e40cb1b..ff2f920 100644
    target_link_libraries(Testing PUBLIC
      Foundation)
 diff --git a/swift-foundation/Sources/FoundationEssentials/Platform.swift b/swift-foundation/Sources/FoundationEssentials/Platform.swift
-index a7aad43..fe3eb61 100644
+index da4977be..6587ccd8 100644
 --- a/swift-foundation/Sources/FoundationEssentials/Platform.swift
 +++ b/swift-foundation/Sources/FoundationEssentials/Platform.swift
 @@ -164,9 +164,13 @@ extension Platform {
      }
      
-     static func gid(forName name: String) -> gid_t? {
+     static func gid(forName name: String) -> uid_t? {
 +        #if os(Android)
 +            return nil
 +        #else
