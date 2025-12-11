@@ -141,6 +141,8 @@ jobs:
           perl -pi -e 's%String\(cString: getpass%\"fake\" //%' swiftpm/Sources/PackageRegistryCommand/PackageRegistryCommand+Auth.swift
           perl -pi -e "s%swift/android',%swift/android', '-Xlinker', '-landroid-spawn',%" sourcekit-lsp/Utilities/build-script-helper.py
           perl -pi -e 's%24%23%' $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ifaddrs.h
+          perl -pi -e 's%__INTRODUCED_IN(24)%__INTRODUCED_IN(23);%' $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/spawn.h
+          perl -pi -e 's%__INTRODUCED_IN(28)%__INTRODUCED_IN(23);%' $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/spawn.h
           
           # disable backtrace() for Android (needs either API33+ or libandroid-execinfo, or to manually add in backtrace backport)
           perl -pi -e 's;os\(Android\);os\(AndroidDISABLED\);g' swift-testing/Sources/Testing/SourceAttribution/Backtrace.swift
@@ -166,6 +168,9 @@ jobs:
             # Patch the NDK execinfo.h to work with the backported libandroid-execinfo
             cp $SYSROOT/usr/include/execinfo.h ${SDK_NAME}/usr/include
             perl -pi -e 's%33%24%' ${SDK_NAME}/usr/include/execinfo.h
+
+            perl -pi -e 's%__INTRODUCED_IN(24)%__INTRODUCED_IN(23);%' ${SDK_NAME}/usr/include/spawn.h
+            perl -pi -e 's%__INTRODUCED_IN(28)%__INTRODUCED_IN(23);%' ${SDK_NAME}/usr/include/spawn.h
 
             # Patch the ifaddrs now that we have a a stub
             perl -pi -e 's%24%23%' $SYSROOT/usr/include/ifaddrs.h
