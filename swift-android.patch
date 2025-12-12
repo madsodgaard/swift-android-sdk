@@ -92,7 +92,7 @@ index da4977be..6587ccd8 100644
      
      static func homeDirectory(forUserName userName: String) -> String? {
 diff --git a/swift-corelibs-foundation/Sources/Foundation/Process.swift b/swift-corelibs-foundation/Sources/Foundation/Process.swift
-index 618c0102..1aec4ab9 100644
+index 866298a29..2fa68a806 100644
 --- a/swift-corelibs-foundation/Sources/Foundation/Process.swift
 +++ b/swift-corelibs-foundation/Sources/Foundation/Process.swift
 @@ -944,14 +944,10 @@ open class Process: NSObject, @unchecked Sendable {
