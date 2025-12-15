@@ -27,19 +27,6 @@ index 016bf294..5c42986a 100644
  
  if(LINKER_SUPPORTS_BUILD_ID)
    target_link_options(Foundation PRIVATE "LINKER:--build-id=sha1")
-diff --git a/swift-corelibs-foundation/Sources/Foundation/Process.swift b/swift-corelibs-foundation/Sources/Foundation/Process.swift
-index 758dd1df..02970992 100644
---- a/swift-corelibs-foundation/Sources/Foundation/Process.swift
-+++ b/swift-corelibs-foundation/Sources/Foundation/Process.swift
-@@ -944,7 +944,7 @@ open class Process: NSObject, @unchecked Sendable {
-         var spawnAttrs: posix_spawnattr_t = posix_spawnattr_t()
- #endif
-         try _throwIfPosixError(posix_spawnattr_init(&spawnAttrs))
--#if os(Android)
-+#if os(Windows)
-         guard var spawnAttrs else {
-             throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno),
-                           userInfo: [NSURLErrorKey:self.executableURL!])
 diff --git a/swift-testing/Sources/Testing/CMakeLists.txt b/swift-testing/Sources/Testing/CMakeLists.tx
 index e40cb1b..ff2f920 100644
 --- a/swift-testing/Sources/Testing/CMakeLists.txt

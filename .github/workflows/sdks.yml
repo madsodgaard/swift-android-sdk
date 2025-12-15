@@ -128,11 +128,7 @@ jobs:
 
           ANDROID_ARCH=aarch64 BUILD_SWIFT_PM=1 ${TOOLCHAIN}/bin/swift get-packages-and-swift-source.swift
 
-          head -n 950 swift-corelibs-foundation/Sources/Foundation/Process.swift | tail -n 20
-
-          # Attempt to apply with verbose output and rejection handling
-          git apply -v --reject -C1 swift-android.patch swift-android-ci.patch || true
-
+          git apply -C1 swift-android.patch swift-android-ci.patch
           # Check if the specific reject file exists and print it to the CI logs
           if [ -f "swift-corelibs-foundation/Sources/Foundation/Process.swift.rej" ]; then
               echo ">>>> CONTENTS OF REJECT FILE:"
