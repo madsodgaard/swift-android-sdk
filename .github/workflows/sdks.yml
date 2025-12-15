@@ -127,7 +127,18 @@ jobs:
 
           ANDROID_ARCH=aarch64 BUILD_SWIFT_PM=1 ${TOOLCHAIN}/bin/swift get-packages-and-swift-source.swift
 
-          git apply -C1 swift-android.patch swift-android-ci.patch
+          head -n 950 swift-corelibs-foundation/Sources/Foundation/Process.swift | tail -n 20
+
+          # Attempt to apply with verbose output and rejection handling
+          git apply -v --reject -C1 swift-android.patch swift-android-ci.patch || true
+
+          # Check if the specific reject file exists and print it to the CI logs
+          if [ -f "swift-corelibs-foundation/Sources/Foundation/Process.swift.rej" ]; then
+              echo ">>>> CONTENTS OF REJECT FILE:"
+              cat swift-corelibs-foundation/Sources/Foundation/Process.swift.rej
+              exit 1 # Fail the build manually after printing
+          fi
+          
           BUILD_FLAG="--foundation-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
           if ${{ matrix.version == 'release' }}; then
             git apply swift-android-ci-release.patch swift-android-release.patch
