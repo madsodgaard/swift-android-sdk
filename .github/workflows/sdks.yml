@@ -31,6 +31,7 @@ jobs:
             LATEST_TOOLCHAIN_VERSION=$(curl -sL https://github.com/apple/swift/tags | grep -m1 swift-DEV | cut -d- -f7-9)
             SWIFT_TAG="swift-DEVELOPMENT-SNAPSHOT-${LATEST_TOOLCHAIN_VERSION}-a"
           fi
+          SWIFT_TAG="swift-6.3-DEVELOPMENT-SNAPSHOT-2025-12-07-a"
           echo "tag=$SWIFT_TAG" >> $GITHUB_OUTPUT
           echo "key=$SWIFT_TAG-ndk-${NDK_VERSION}-test-bundle" >> $GITHUB_OUTPUT
       - name: Get cached SDK bundle
@@ -138,7 +139,7 @@ jobs:
               cat swift-corelibs-foundation/Sources/Foundation/Process.swift.rej
               exit 1 # Fail the build manually after printing
           fi
-          
+
           BUILD_FLAG="--foundation-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
           if ${{ matrix.version == 'release' }}; then
             git apply swift-android-ci-release.patch swift-android-release.patch
