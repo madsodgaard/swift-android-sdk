@@ -78,34 +78,3 @@ index da4977be..6587ccd8 100644
      }
      
      static func homeDirectory(forUserName userName: String) -> String? {
-diff --git a/swift-corelibs-foundation/Sources/Foundation/Process.swift b/swift-corelibs-foundation/Sources/Foundation/Process.swift
-index 866298a29..2fa68a806 100644
---- a/swift-corelibs-foundation/Sources/Foundation/Process.swift
-+++ b/swift-corelibs-foundation/Sources/Foundation/Process.swift
-@@ -944,14 +944,10 @@ open class Process: NSObject, @unchecked Sendable {
- #else
-         var spawnAttrs: posix_spawnattr_t = posix_spawnattr_t()
- #endif
-+#if !os(Android)
-         try _throwIfPosixError(posix_spawnattr_init(&spawnAttrs))
--#if os(Android)
--        guard var spawnAttrs else {
--            throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno),
--                          userInfo: [NSURLErrorKey:self.executableURL!])
--        }
--#endif
-         try _throwIfPosixError(posix_spawnattr_setflags(&spawnAttrs, .init(POSIX_SPAWN_SETPGROUP)))
-+#endif
- #if canImport(Darwin)
-         try _throwIfPosixError(posix_spawnattr_setflags(&spawnAttrs, .init(POSIX_SPAWN_CLOEXEC_DEFAULT)))
- #else
-@@ -995,7 +991,9 @@ open class Process: NSObject, @unchecked Sendable {
-                 throw _NSErrorWithErrno(errno, reading: true, path: launchPath)
-             }
-         })
-+#if !os(Android)
-         posix_spawnattr_destroy(&spawnAttrs)
-+#endif
- 
-         // Close the write end of the input and output pipes.
-         if let pipe = standardInput as? Pipe {

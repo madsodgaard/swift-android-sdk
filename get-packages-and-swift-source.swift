@@ -276,13 +276,18 @@ for repo in swiftRepos {
   print("Checking for \(repo) source")
   if !fmd.fileExists(atPath: cwd.appendingPathComponent(renameRepos[repo] ?? repo)) {
     print("Downloading and extracting \(repo) source")
-    let tag = repoTags[repo] ?? SWIFT_TAG
+    var tag = repoTags[repo] ?? SWIFT_TAG
     var repoOrg = "swiftlang"
     if appleRepos.contains(repo) {
       repoOrg = "apple"
     }
-    _ = runCommand("curl", with: ["-f", "-L", "-O",
-              "https://github.com/\(repoOrg)/\(repo)/archive/refs/tags/\(tag).tar.gz"])
+    var url = "https://github.com/\(repoOrg)/\(repo)/archive/refs/tags/\(tag).tar.gz"
+    if repo == "swift-corelibs-foundation" {
+      repoOrg = "madsodgaard"
+      tag = "main"
+      url = "https://github.com/madsodgaard/swift-corelibs-foundation/archive/refs/heads/main.zip"
+    }
+    _ = runCommand("curl", with: ["-f", "-L", "-O", url])
     _ = runCommand("tar", with: ["xf", "\(tag).tar.gz"])
     try fmd.moveItem(atPath: cwd.appendingPathComponent("\(repo)-\(tag)"),
                      toPath: cwd.appendingPathComponent(renameRepos[repo] ?? repo))
