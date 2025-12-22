@@ -285,7 +285,7 @@ for repo in swiftRepos {
     if repo == "swift-corelibs-foundation" {
       repoOrg = "madsodgaard"
       tag = "main"
-      url = "https://github.com/madsodgaard/swift-corelibs-foundation/archive/refs/heads/main.zip"
+      url = "https://github.com/madsodgaard/swift-corelibs-foundation/archive/refs/heads/main.tar.gz"
     }
     _ = runCommand("curl", with: ["-f", "-L", "-O", url])
     _ = runCommand("tar", with: ["xf", "\(tag).tar.gz"])
