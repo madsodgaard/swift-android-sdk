@@ -73,12 +73,3 @@ is basically the [Android implementation](https://android.googlesource.com/platf
 but modified to make it compile with the Swift standard library.
 
 We also modify the `ifaddrs.h` header to move the constraint to API 23 instead of 24.
-
-### Bionic group file APIs
-Android 23 does not include support for `getgrgid_r` and `getgrnam_r`,
-which are used in `FoundationEssentials/Platform.swift`.
-We have just stubbed these out, as we don't need them.
-
-### Disable backtrace in swift-testing
-`swift-testing` uses `backtrace`, which does not work on Android 23.
-We therefore just disable backtrace support.

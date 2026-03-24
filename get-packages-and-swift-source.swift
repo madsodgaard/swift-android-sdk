@@ -4,7 +4,7 @@ import Foundation
 // libxml2 needs liblzma and libiconv
 // libcurl needs zlib, libnghttp3, libnghttp2, libssh2, and openssl
 // Testing needs backtrace() from libandroid-execinfo
-var termuxPackages = ["libandroid-execinfo", "libandroid-spawn", "libandroid-spawn-static", "libcurl", "zlib", "libxml2", "libnghttp3", "libnghttp2", "libssh2", "openssl", "liblzma", "libiconv"]
+var termuxPackages = ["libandroid-execinfo", "libandroid-spawn", "libcurl", "zlib", "libxml2", "libnghttp3", "libnghttp2", "libssh2", "openssl", "liblzma", "libiconv"]
 let termuxURL = "https://packages.termux.dev/apt/termux-main"
 
 var swiftRepos = ["llvm-project", "swift", "swift-experimental-string-processing", "swift-corelibs-libdispatch",
