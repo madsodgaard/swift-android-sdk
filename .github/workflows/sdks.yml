@@ -184,9 +184,9 @@ jobs:
             patchelf --set-rpath \$ORIGIN lib/swift/android/lib[dFXs]*.so
             # Remove executables and unused toolchain headers/libraries
             rm -r bin lib/libsqlite3.so lib/lib{curses,ncurses}.so lib/terminfo share/{tabset,terminfo}
-            mv include/curl include/execinfo.h include/libxml2 include/spawn.h .
+            mv include/curl include/libxml2 include/spawn.h .
             rm -r include/*
-            mv curl execinfo.h libxml2 spawn.h include/
+            mv curl libxml2 spawn.h include/
             cp -r ../../swift/lib/ClangImporter/SwiftBridging/{module.modulemap,swift} include/
 
             perl -pi -e 's%__INTRODUCED_IN(24)%__INTRODUCED_IN(23)%' include/spawn.h
