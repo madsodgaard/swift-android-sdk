@@ -89,6 +89,13 @@ jobs:
         with:
           path: ~/android-sysroot.tar.xz
           key: android-ndk-${{ env.NDK_VERSION }}
+      - name: Get cached Android NDK r${{ env.NDK_VERSION }} toolchain
+        id: cache-ndk-toolchain
+        uses: actions/cache@v4
+        if: ${{ (steps.cache-bundle.outputs.cache-hit != 'true') && startsWith(matrix.os, 'ubuntu') }}
+        with:
+          path: ~/android-ndk-r${{ env.NDK_VERSION }}
+          key: android-ndk-r${{ env.NDK_VERSION }}-toolchain
       - name: Extract Android NDK sysroot if not cached before
         if: ${{ steps.cache-bundle.outputs.cache-hit != 'true' && steps.cache-ndk.outputs.cache-hit != 'true' && startsWith(matrix.os, 'ubuntu') }}
         run: |
@@ -102,8 +109,19 @@ jobs:
           mv android-ndk-r$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/sysroot .
           rm -r sysroot/usr/{include,lib}/{i686,riscv64}-linux-android
           mv android-ndk-r$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/*/lib/linux sysroot
-          rm -r sysroot/linux/*{i[36]86,riscv64}* android-ndk-r$NDK_VERSION
+          rm -r sysroot/linux/*{i[36]86,riscv64}*
+          mv android-ndk-r$NDK_VERSION ~/
           tar cJf ~/android-sysroot.tar.xz sysroot
+      - name: Download Android NDK r${{ env.NDK_VERSION }} toolchain if not cached
+        if: ${{ steps.cache-bundle.outputs.cache-hit != 'true' && steps.cache-ndk-toolchain.outputs.cache-hit != 'true' && steps.cache-ndk.outputs.cache-hit == 'true' && startsWith(matrix.os, 'ubuntu') }}
+        run: |
+          cd
+          wget -q https://dl.google.com/android/repository/android-ndk-r$NDK_VERSION-linux.zip
+          unzip -q android-ndk-r$NDK_VERSION-linux.zip
+          rm android-ndk-r$NDK_VERSION-linux.zip
+      - name: Set ANDROID_NDK_HOME to NDK r${{ env.NDK_VERSION }}
+        if: ${{ steps.cache-bundle.outputs.cache-hit != 'true' && startsWith(matrix.os, 'ubuntu') }}
+        run: echo "ANDROID_NDK_HOME=$HOME/android-ndk-r$NDK_VERSION" >> $GITHUB_ENV
       - name: Clone
         uses: actions/checkout@v4
         with:
