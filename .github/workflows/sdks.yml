@@ -136,11 +136,9 @@ jobs:
               exit 1 # Fail the build manually after printing
           fi
 
-          BUILD_FLAG="--foundation-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
+          BUILD_FLAG="--foundation-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS='' --libdispatch-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
           if ${{ matrix.version == 'release' }}; then
             git apply swift-android-ci-release.patch
-          else
-            BUILD_FLAG+=" --libdispatch-cmake-options=-DCMAKE_SHARED_LINKER_FLAGS=''"
           fi
           git apply ifaddrs.patch
 
